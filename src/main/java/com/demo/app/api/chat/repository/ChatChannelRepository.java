@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,16 +24,8 @@ public class ChatChannelRepository {
     }
 
     public ChatChannel updateFromRequest(ChatChannel exist, ChannelCreateRequest request) {
-        Criteria criteria = this.findFromRequestCriteria(request);
-        Update update = new Update();
-        update.set("appVersion", request.getAppVersion());
-        update.set("channelType", request.getChannelType());
-        update.set("userId", request.getUserId());
-        update.set("maxSubscribers", request.getMaxSubscribers());
-        update.set("publishSubscribers", request.isPublishSubscribers());
-
-        mongoTemplate.updateMulti(new Query(criteria), update, ChatChannel.class);
-        return exist;
+        exist.setUpdateFromCreateRequest(request);
+        return this.mongoTemplate.save(exist);
     }
 
     private ChatChannel save(ChatChannel exist) {

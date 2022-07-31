@@ -41,7 +41,7 @@ public class ChatServiceImpl implements ChatService{
             // 실제론 실제 서비스 유저인지 체크하는 로직도 들어가야함
             ChatUser exist = this.createOrGetChatUser(request);
             response = new ChatUserAuthSuccessResponse();
-            ((ChatUserAuthSuccessResponse)response).setUserId(UUID.randomUUID().toString());
+            ((ChatUserAuthSuccessResponse)response).setUserId(exist.getUserId());
             response.successResponse();
         } catch (Exception e) {
             e.printStackTrace();
