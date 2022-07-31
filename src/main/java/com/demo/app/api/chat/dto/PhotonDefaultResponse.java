@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString()
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class PhotonDefaultResponse implements PhotonResponse{
     private int ResultCode;
