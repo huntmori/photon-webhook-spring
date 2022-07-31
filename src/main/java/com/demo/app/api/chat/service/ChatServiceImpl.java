@@ -35,7 +35,8 @@ public class ChatServiceImpl implements ChatService{
     public PhotonResponse chatUserAuth(ChatUserAuthRequest request) {
         PhotonResponse response = null;
         try {
-
+            // 실제론 실제 서비스 유저인지 체크하는 로직도 들어가야함
+            ChatUser exist = this.createOrGetChatUser(request);
             response = new ChatUserAuthSuccessResponse();
             ((ChatUserAuthSuccessResponse)response).setUserId(UUID.randomUUID().toString());
             response.successResponse();
@@ -50,8 +51,13 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public PhotonResponse chatChannelCreate(ChannelCreateRequest request) {
         PhotonResponse response = new PhotonDefaultResponse();
-
-        response.successResponse();
+        try {
+            
+            response.successResponse();
+        } catch (Exception e ) {
+            e.printStackTrace();
+            response.errorResponse("unknown server error");
+        }
         log.info("response:"+response.toString());
         return response;
     }
@@ -90,5 +96,34 @@ public class ChatServiceImpl implements ChatService{
         response.successResponse();
         log.info("response:"+response.toString());
         return response;
+    }
+
+    @Override
+    public ChatUser chatUserExist(ChatUserAuthRequest request) {
+        String appId = request.getAppId();
+        String platformId = request.getPlatformAccountId();
+
+        return this.userRepository.find(appId, platformId);
+    }
+
+    @Override
+    public ChatUser createOrGetChatUser(ChatUserAuthRequest request) {
+        ChatUser exist = this.chatUserExist(request);
+        if (exist == null) {
+            exist = this.createUser(request);
+        } else {
+            exist = this.updateUser(exist, request);
+        }
+        return exist;
+    }
+
+    @Override
+    public ChatUser createUser(ChatUserAuthRequest request) {
+        return this.userRepository.createFromRequest(request);
+    }
+
+    @Override
+    public ChatUser updateUser(ChatUser user, ChatUserAuthRequest request) {
+        return this.userRepository.updateFromRequest(user,request);
     }
 }

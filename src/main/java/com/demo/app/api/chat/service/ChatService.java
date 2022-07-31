@@ -23,4 +23,12 @@ public interface ChatService {
     PhotonResponse channelDestroy(ChannelDestroyRequest request);
 
     PhotonResponse publishMessage(PublishMessageRequest request);
+
+    ChatUser chatUserExist(ChatUserAuthRequest request);
+
+    ChatUser createOrGetChatUser(ChatUserAuthRequest request);
+
+    ChatUser createUser(ChatUserAuthRequest request);
+
+    ChatUser updateUser(ChatUser exist, ChatUserAuthRequest request);
 }
