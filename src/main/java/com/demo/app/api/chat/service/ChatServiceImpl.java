@@ -10,8 +10,10 @@ import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthFailResponse;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthSuccessResponse;
 import com.demo.app.api.chat.dto.publishMessage.PublishMessageRequest;
+import com.demo.app.api.chat.entity.ChatChannel;
 import com.demo.app.api.chat.entity.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
+import com.demo.app.api.chat.repository.ChatChannelRepository;
 import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import java.util.UUID;
 public class ChatServiceImpl implements ChatService{
 
     private final ChatUserRepository userRepository;
+    private final ChatChannelRepository channelRepository;
 
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
@@ -52,7 +55,7 @@ public class ChatServiceImpl implements ChatService{
     public PhotonResponse chatChannelCreate(ChannelCreateRequest request) {
         PhotonResponse response = new PhotonDefaultResponse();
         try {
-            
+            ChatChannel exist = this.createOrGetChannel(request);
             response.successResponse();
         } catch (Exception e ) {
             e.printStackTrace();
@@ -125,5 +128,16 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public ChatUser updateUser(ChatUser user, ChatUserAuthRequest request) {
         return this.userRepository.updateFromRequest(user,request);
+    }
+
+    @Override
+    public ChatChannel createOrGetChannel(ChannelCreateRequest request) {
+        ChatChannel exist = this.channelRepository.findFromRequest(request);
+        if (exist == null) {
+            exist = this.channelRepository.createFromRequest(request);
+        } else {
+            exist = this.channelRepository.updateFromRequest(exist, request);
+        }
+        return exist;
     }
 }

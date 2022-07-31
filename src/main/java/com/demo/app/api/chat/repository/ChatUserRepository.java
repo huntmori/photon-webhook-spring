@@ -1,6 +1,8 @@
 package com.demo.app.api.chat.repository;
 
+import com.demo.app.api.chat.dto.chatChannelCreate.ChannelCreateRequest;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
+import com.demo.app.api.chat.entity.ChatChannel;
 import com.demo.app.api.chat.entity.ChatUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -34,4 +36,5 @@ public class ChatUserRepository {
         user.setUpdateFromRequest(request);
         return this.mongoTemplate.save(user);
     }
+
 }

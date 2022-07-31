@@ -17,12 +17,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Document
 @ToString
 @CompoundIndexes({
-        @CompoundIndex(name = "chat_user_unique", def = "{'appId':1, 'platformId':1}")
+        @CompoundIndex(
+                name = "chat_user_unique",
+                def = "{'appId':1, 'platformId':1}"
+        )
 })
 public class ChatUser {
     @MongoId
@@ -37,19 +39,19 @@ public class ChatUser {
     private LocalDateTime updatedAt;
 
     public void setCreateFromRequest(ChatUserAuthRequest request) {
-        this.setAppId(request.getAppId());
-        this.setRegion(request.getFixedRegion());
-        this.setLatestAppVersion(request.getAppVersion());
-        this.setPlatformId(request.getPlatformAccountId());
-        this.setUserId(UUID.randomUUID().toString());
+        this.appId = (request.getAppId());
+        this.region = (request.getFixedRegion());
+        this.latestAppVersion = (request.getAppVersion());
+        this.platformId = (request.getPlatformAccountId());
+        this.userId = (UUID.randomUUID().toString());
         LocalDateTime now = LocalDateTime.now();
-        this.setCreatedAt(now);
-        this.setUpdatedAt(now);
+        this.createdAt = (now);
+        this.updatedAt = (now);
     }
 
     public void setUpdateFromRequest(ChatUserAuthRequest request) {
-        this.setRegion(request.getFixedRegion());
-        this.setLatestAppVersion(request.getAppVersion());
-        this.setUpdatedAt(LocalDateTime.now());
+        this.region = (request.getFixedRegion());
+        this.latestAppVersion = (request.getAppVersion());
+        this.updatedAt = (LocalDateTime.now());
     }
 }
