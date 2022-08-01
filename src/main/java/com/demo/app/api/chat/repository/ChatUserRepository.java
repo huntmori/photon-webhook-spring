@@ -37,4 +37,10 @@ public class ChatUserRepository {
         return this.mongoTemplate.save(user);
     }
 
+    public ChatUser findByChatUserId(String appId, String userId) {
+        Criteria condition = Criteria.where("appId").is(appId)
+                .and("userId").is("userId");
+        Query query = new Query(condition);
+        return this.mongoTemplate.findOne(query, ChatUser.class);
+    }
 }

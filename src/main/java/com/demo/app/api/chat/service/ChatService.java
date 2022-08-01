@@ -8,6 +8,7 @@ import com.demo.app.api.chat.dto.chatChannelUnsubscribe.ChannelUnsubscribeReques
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
 import com.demo.app.api.chat.dto.publishMessage.PublishMessageRequest;
 import com.demo.app.api.chat.entity.ChatChannel;
+import com.demo.app.api.chat.entity.ChatSubscribe;
 import com.demo.app.api.chat.entity.ChatUser;
 
 public interface ChatService {
@@ -34,4 +35,6 @@ public interface ChatService {
     ChatUser updateUser(ChatUser exist, ChatUserAuthRequest request);
 
     ChatChannel createOrGetChannel(ChannelCreateRequest request);
+
+    ChatSubscribe createOrGetSubscribe(ChatUser user, ChatChannel exist);
 }

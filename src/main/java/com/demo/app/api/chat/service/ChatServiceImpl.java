@@ -11,9 +11,11 @@ import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthSuccessResponse;
 import com.demo.app.api.chat.dto.publishMessage.PublishMessageRequest;
 import com.demo.app.api.chat.entity.ChatChannel;
+import com.demo.app.api.chat.entity.ChatSubscribe;
 import com.demo.app.api.chat.entity.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
 import com.demo.app.api.chat.repository.ChatChannelRepository;
+import com.demo.app.api.chat.repository.ChatSubscribeRepository;
 import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class ChatServiceImpl implements ChatService{
 
     private final ChatUserRepository userRepository;
     private final ChatChannelRepository channelRepository;
+    private final ChatSubscribeRepository subscribeRepository;
 
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
@@ -55,7 +58,9 @@ public class ChatServiceImpl implements ChatService{
     public PhotonResponse chatChannelCreate(ChannelCreateRequest request) {
         PhotonResponse response = new PhotonDefaultResponse();
         try {
+            ChatUser user = this.userRepository.findByChatUserId(request.getAppId(), request.getUserId());
             ChatChannel exist = this.createOrGetChannel(request);
+            ChatSubscribe subscribeExist = this.createOrGetSubscribe(user, exist);
             response.successResponse();
         } catch (Exception e ) {
             e.printStackTrace();
@@ -139,5 +144,16 @@ public class ChatServiceImpl implements ChatService{
             exist = this.channelRepository.updateFromRequest(exist, request);
         }
         return exist;
+    }
+
+    @Override
+    public ChatSubscribe createOrGetSubscribe(ChatUser user, ChatChannel channel) {
+        ChatSubscribe exist = this.subscribeRepository.find(user, channel);
+        if(exist == null) {
+            //TODO : Create Channel Subscribe
+        } else {
+            //TODO : Update Subscribe State
+        }
+        return null;
     }
 }
