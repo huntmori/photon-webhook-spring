@@ -13,13 +13,5 @@ import java.time.LocalDateTime;
 @Document
 @Builder
 public class ChatSubscribe {
-    @MongoId
-    @Id
-    private ObjectId _id;
-    private ObjectId channelObjectId;
-    private ObjectId userObjectId;
-    private String subscribeState;
-    private String appVersion;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 }

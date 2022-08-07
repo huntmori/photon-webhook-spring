@@ -14,146 +14,77 @@ import com.demo.app.api.chat.entity.ChatChannel;
 import com.demo.app.api.chat.entity.ChatSubscribe;
 import com.demo.app.api.chat.entity.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
-import com.demo.app.api.chat.repository.ChatChannelRepository;
-import com.demo.app.api.chat.repository.ChatSubscribeRepository;
-import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ChatServiceImpl implements ChatService{
 
-    private final ChatUserRepository userRepository;
-    private final ChatChannelRepository channelRepository;
-    private final ChatSubscribeRepository subscribeRepository;
-
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
-        return this.userRepository.create(document);
+        return null;
     }
 
     @Override
     public PhotonResponse chatUserAuth(ChatUserAuthRequest request) {
-        PhotonResponse response = null;
-        try {
-            // 실제론 실제 서비스 유저인지 체크하는 로직도 들어가야함
-            ChatUser exist = this.createOrGetChatUser(request);
-            response = new ChatUserAuthSuccessResponse();
-            ((ChatUserAuthSuccessResponse)response).setUserId(exist.getUserId());
-            response.successResponse();
-        } catch (Exception e) {
-            e.printStackTrace();
-            response = new ChatUserAuthFailResponse(AuthResultCode.FAIL, "Unknown server error");
-        }
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public PhotonResponse chatChannelCreate(ChannelCreateRequest request) {
-        PhotonResponse response = new PhotonDefaultResponse();
-        try {
-            ChatUser user = this.userRepository.findByChatUserId(request.getAppId(), request.getUserId());
-            ChatChannel exist = this.createOrGetChannel(request);
-            ChatSubscribe subscribeExist = this.createOrGetSubscribe(user, exist);
-            response.successResponse();
-        } catch (Exception e ) {
-            e.printStackTrace();
-            response.errorResponse("unknown server error");
-        }
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public PhotonResponse channelSubscribe(ChannelSubscribeRequest request) {
-        PhotonResponse response = new PhotonDefaultResponse();
-
-        response.successResponse();
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public PhotonResponse channelUnsubscribe(ChannelUnsubscribeRequest request) {
-        PhotonResponse response = new PhotonDefaultResponse();
-
-        response.successResponse();
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public PhotonResponse channelDestroy(ChannelDestroyRequest request) {
-        PhotonResponse response = new PhotonDefaultResponse();
-
-        response.successResponse();
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public PhotonResponse publishMessage(PublishMessageRequest request) {
-        PhotonResponse response = new PhotonDefaultResponse();
-
-        response.successResponse();
-        log.info("response:"+response.toString());
-        return response;
+        return null;
     }
 
     @Override
     public ChatUser chatUserExist(ChatUserAuthRequest request) {
-        String appId = request.getAppId();
-        String platformId = request.getPlatformAccountId();
-
-        return this.userRepository.find(appId, platformId);
+        return null;
     }
 
     @Override
     public ChatUser createOrGetChatUser(ChatUserAuthRequest request) {
-        ChatUser exist = this.chatUserExist(request);
-        if (exist == null) {
-            exist = this.createUser(request);
-        } else {
-            exist = this.updateUser(exist, request);
-        }
-        return exist;
+        return null;
     }
 
     @Override
     public ChatUser createUser(ChatUserAuthRequest request) {
-        return this.userRepository.createFromRequest(request);
+        return null;
     }
 
     @Override
-    public ChatUser updateUser(ChatUser user, ChatUserAuthRequest request) {
-        return this.userRepository.updateFromRequest(user,request);
+    public ChatUser updateUser(ChatUser exist, ChatUserAuthRequest request) {
+        return null;
     }
 
     @Override
     public ChatChannel createOrGetChannel(ChannelCreateRequest request) {
-        ChatChannel exist = this.channelRepository.findFromRequest(request);
-        if (exist == null) {
-            exist = this.channelRepository.createFromRequest(request);
-        } else {
-            exist = this.channelRepository.updateFromRequest(exist, request);
-        }
-        return exist;
+        return null;
     }
 
     @Override
-    public ChatSubscribe createOrGetSubscribe(ChatUser user, ChatChannel channel) {
-        ChatSubscribe exist = this.subscribeRepository.find(user, channel);
-        if(exist == null) {
-            //TODO : Create Channel Subscribe
-        } else {
-            //TODO : Update Subscribe State
-        }
+    public ChatSubscribe createOrGetSubscribe(ChatUser user, ChatChannel exist) {
         return null;
     }
 }

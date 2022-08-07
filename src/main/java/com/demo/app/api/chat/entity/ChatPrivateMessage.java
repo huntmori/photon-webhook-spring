@@ -18,12 +18,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatPrivateMessage {
-    @MongoId
-    @Id
-    private ObjectId _id;
-    private ObjectId chatUserId;
-    private String appVersion;
-    private LinkedHashMap<String, Object> message;
-    private List<ObjectId> userPair = new ArrayList<>(2);
-    private LocalDateTime createdAt;
+
 }

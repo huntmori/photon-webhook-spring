@@ -16,12 +16,5 @@ import java.util.LinkedHashMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatPublicMessage {
-    @MongoId
-    @Id
-    private ObjectId _id;
-    private ObjectId chatUserId;
-    private ObjectId channelId;
-    private String appVersion;
-    private LinkedHashMap<String, Object> message;
-    private LocalDateTime createdAt;
+
 }
