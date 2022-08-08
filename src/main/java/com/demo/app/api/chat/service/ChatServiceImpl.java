@@ -1,19 +1,15 @@
 package com.demo.app.api.chat.service;
 
-import com.demo.app.api.chat.dto.PhotonDefaultResponse;
 import com.demo.app.api.chat.dto.PhotonResponse;
 import com.demo.app.api.chat.dto.chatChannelCreate.ChannelCreateRequest;
 import com.demo.app.api.chat.dto.chatChannelDestroy.ChannelDestroyRequest;
 import com.demo.app.api.chat.dto.chatChannelSubscribe.ChannelSubscribeRequest;
 import com.demo.app.api.chat.dto.chatChannelUnsubscribe.ChannelUnsubscribeRequest;
-import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthFailResponse;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
-import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthSuccessResponse;
 import com.demo.app.api.chat.dto.publishMessage.PublishMessageRequest;
-import com.demo.app.api.chat.entity.ChatChannel;
-import com.demo.app.api.chat.entity.ChatSubscribe;
-import com.demo.app.api.chat.entity.ChatUser;
-import com.demo.app.api.chat.enums.AuthResultCode;
+import com.demo.app.api.chat.document.ChatChannel;
+import com.demo.app.api.chat.document.ChatSubscribe;
+import com.demo.app.api.chat.document.ChatUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

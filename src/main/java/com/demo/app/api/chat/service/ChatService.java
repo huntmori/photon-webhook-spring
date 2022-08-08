@@ -7,9 +7,9 @@ import com.demo.app.api.chat.dto.chatChannelSubscribe.ChannelSubscribeRequest;
 import com.demo.app.api.chat.dto.chatChannelUnsubscribe.ChannelUnsubscribeRequest;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
 import com.demo.app.api.chat.dto.publishMessage.PublishMessageRequest;
-import com.demo.app.api.chat.entity.ChatChannel;
-import com.demo.app.api.chat.entity.ChatSubscribe;
-import com.demo.app.api.chat.entity.ChatUser;
+import com.demo.app.api.chat.document.ChatChannel;
+import com.demo.app.api.chat.document.ChatSubscribe;
+import com.demo.app.api.chat.document.ChatUser;
 
 public interface ChatService {
     ChatUser chatUserCreate(ChatUser document);

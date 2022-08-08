@@ -1,6 +1,6 @@
 package com.demo.app.api.chat.repository;
 
-import com.demo.app.api.chat.entity.ChatUser;
+import com.demo.app.api.chat.document.ChatUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
