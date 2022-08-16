@@ -13,6 +13,7 @@ import com.demo.app.api.chat.document.ChatChannel;
 import com.demo.app.api.chat.document.ChatSubscribe;
 import com.demo.app.api.chat.document.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
+import com.demo.app.api.chat.mapper.ChatUserMapperImpl;
 import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ChatServiceImpl implements ChatService{
     private final ChatUserRepository userRepository;
+    private final ChatUserMapperImpl chatUserMapper;
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
 
@@ -37,6 +39,15 @@ public class ChatServiceImpl implements ChatService{
                     request.getAppId(),
                     request.getPlatformAccountId()
             );
+            if(exist == null) {
+                ChatUser params = this.chatUserMapper.toEntityCreate(request);
+                exist = this.userRepository.insert(params);
+            } else {
+                //update User
+
+            }
+            response = new ChatUserAuthSuccessResponse();
+            ((ChatUserAuthSuccessResponse)response).setUserId(exist.getChatUserId());
         } catch (Exception e) {
             e.printStackTrace();
             response = new ChatUserAuthFailResponse(AuthResultCode.INVALID_PARAMETER, e.getMessage());

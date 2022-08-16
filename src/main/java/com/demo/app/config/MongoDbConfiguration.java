@@ -33,7 +33,6 @@ public class MongoDbConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        MongoTemplate template = new MongoTemplate(mongoClient(), mongoDb);
-        return template;
+        return new MongoTemplate(mongoClient(), mongoDb);
     }
 }

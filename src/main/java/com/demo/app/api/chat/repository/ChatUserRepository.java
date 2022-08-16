@@ -19,4 +19,8 @@ public class ChatUserRepository {
 
         return this.mongoTemplate.findOne(query, ChatUser.class);
     }
+
+    public ChatUser insert(ChatUser params) {
+        return this.mongoTemplate.insert(params);
+    }
 }
