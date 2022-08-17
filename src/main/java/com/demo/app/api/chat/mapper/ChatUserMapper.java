@@ -4,8 +4,11 @@ import com.demo.app.api.chat.document.ChatUser;
 import com.demo.app.api.chat.dto.chatUserAuth.ChatUserAuthRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.time.LocalDateTime;
 
 @Mapper(componentModel = "spring")
 public interface ChatUserMapper extends GenericMapper<ChatUserAuthRequest, ChatUser> {
@@ -20,4 +23,10 @@ public interface ChatUserMapper extends GenericMapper<ChatUserAuthRequest, ChatU
             @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     })
     ChatUser toEntityCreate(ChatUserAuthRequest request);
+
+
+    default void updateFromDto(ChatUserAuthRequest request, @MappingTarget ChatUser entity) {
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setLastAppVersion(request.getAppVersion());
+    }
 }

@@ -44,7 +44,8 @@ public class ChatServiceImpl implements ChatService{
                 exist = this.userRepository.insert(params);
             } else {
                 //update User
-
+                this.chatUserMapper.updateFromDto(request, exist);
+                exist = this.userRepository.save(exist);
             }
             response = new ChatUserAuthSuccessResponse();
             ((ChatUserAuthSuccessResponse)response).setUserId(exist.getChatUserId());

@@ -23,4 +23,8 @@ public class ChatUserRepository {
     public ChatUser insert(ChatUser params) {
         return this.mongoTemplate.insert(params);
     }
+
+    public ChatUser save(ChatUser exist) {
+        return this.mongoTemplate.save(exist);
+    }
 }

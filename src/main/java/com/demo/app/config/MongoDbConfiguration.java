@@ -27,12 +27,12 @@ public class MongoDbConfiguration {
     private String mongoDb;
 
     @Bean
-    public MongoClient mongoClient() throws Exception {
+    public MongoClient mongoClient() {
         return MongoClients.create(this.mongoHost);
     }
 
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        return new MongoTemplate(mongoClient(), mongoDb);
+        return new MongoTemplate(this.mongoClient(), mongoDb);
     }
 }
