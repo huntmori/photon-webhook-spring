@@ -2,9 +2,7 @@ package com.demo.app.api.chat.document;
 
 import com.demo.app.api.chat.enums.ChannelType;
 import com.demo.app.api.chat.enums.ChatRegion;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -14,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Document
 @ToString
@@ -34,6 +35,8 @@ public class ChatChannel {
         private ObjectId createdUserId;
         private String createdUserNickname;
         private String channelState;
+        private int maxSubscribers;
+        private boolean publishSubscribers;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 }

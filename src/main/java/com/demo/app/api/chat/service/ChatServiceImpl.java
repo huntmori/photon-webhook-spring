@@ -1,5 +1,6 @@
 package com.demo.app.api.chat.service;
 
+import com.demo.app.api.chat.dto.PhotonDefaultResponse;
 import com.demo.app.api.chat.dto.PhotonResponse;
 import com.demo.app.api.chat.dto.chatChannelCreate.ChannelCreateRequest;
 import com.demo.app.api.chat.dto.chatChannelDestroy.ChannelDestroyRequest;
@@ -13,7 +14,9 @@ import com.demo.app.api.chat.document.ChatChannel;
 import com.demo.app.api.chat.document.ChatSubscribe;
 import com.demo.app.api.chat.document.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
+import com.demo.app.api.chat.mapper.ChatChannelMapperImpl;
 import com.demo.app.api.chat.mapper.ChatUserMapperImpl;
+import com.demo.app.api.chat.repository.ChannelRepository;
 import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,9 @@ import org.springframework.stereotype.Service;
 public class ChatServiceImpl implements ChatService{
     private final ChatUserRepository userRepository;
     private final ChatUserMapperImpl chatUserMapper;
+
+    private final ChannelRepository channelRepository;
+    private final ChatChannelMapperImpl channelMapper;
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
 
@@ -33,7 +39,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public PhotonResponse chatUserAuth(ChatUserAuthRequest request) {
-        PhotonResponse response = null;
+        PhotonResponse response;
         try {
             ChatUser exist = this.userRepository.getOneByAppIdAndPlatformId(
                     request.getAppId(),
@@ -58,7 +64,33 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public PhotonResponse chatChannelCreate(ChannelCreateRequest request) {
-        return null;
+        PhotonResponse response;
+        try {
+            ChatChannel exist = this.channelRepository.findOneByAppIdAndChannelName(
+                    request.getAppId(),
+                    request.getRegion(),
+                    request.getChannelName()
+            );
+            ChatUser user = this.userRepository.findOneByAppIdAndUserId(
+                    request.getAppId(),
+                    request.getUserId()
+            );
+
+            if (exist == null) {
+                ChatChannel params = this.channelMapper.toCreate(request, user);
+                this.channelRepository.insert(params);
+            } else {
+                this.channelMapper.toUpdate(exist, request, user);
+                this.channelRepository.save(exist);
+            }
+            response = new PhotonDefaultResponse();
+            response.successResponse();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new PhotonDefaultResponse();
+            response.errorResponse(e.getMessage());
+        }
+        return response;
     }
 
     @Override
