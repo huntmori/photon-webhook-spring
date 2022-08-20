@@ -95,7 +95,25 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public PhotonResponse channelSubscribe(ChannelSubscribeRequest request) {
-        return null;
+        PhotonResponse response = new PhotonDefaultResponse();
+        try {
+            ChatUser user = this.userRepository.findOneByAppIdAndUserId(
+                    request.getAppId(),
+                    request.getUserId()
+            );
+            ChatChannel exist = this.channelRepository.findOneByAppIdAndChannelName(
+                    request.getAppId(),
+                    request.getRegion(),
+                    request.getChannelName()
+            );
+
+            response.successResponse();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new PhotonDefaultResponse();
+            response.errorResponse(e.getMessage());
+        }
+        return response;
     }
 
     @Override
