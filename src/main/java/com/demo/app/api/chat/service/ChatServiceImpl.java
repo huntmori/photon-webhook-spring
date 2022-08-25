@@ -15,8 +15,10 @@ import com.demo.app.api.chat.document.ChatSubscribe;
 import com.demo.app.api.chat.document.ChatUser;
 import com.demo.app.api.chat.enums.AuthResultCode;
 import com.demo.app.api.chat.mapper.ChatChannelMapperImpl;
+import com.demo.app.api.chat.mapper.ChatSubscribeMapper;
 import com.demo.app.api.chat.mapper.ChatUserMapperImpl;
 import com.demo.app.api.chat.repository.ChannelRepository;
+import com.demo.app.api.chat.repository.ChannelSubscribeRepository;
 import com.demo.app.api.chat.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +29,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ChatServiceImpl implements ChatService{
     private final ChatUserRepository userRepository;
-    private final ChatUserMapperImpl chatUserMapper;
 
+    private final ChannelSubscribeRepository subscribeRepository;
     private final ChannelRepository channelRepository;
+
+    private final ChatUserMapperImpl chatUserMapper;
     private final ChatChannelMapperImpl channelMapper;
+    private final ChatSubscribeMapper subscribeMapper;
     @Override
     public ChatUser chatUserCreate(ChatUser document) {
 
@@ -101,12 +106,25 @@ public class ChatServiceImpl implements ChatService{
                     request.getAppId(),
                     request.getUserId()
             );
-            ChatChannel exist = this.channelRepository.findOneByAppIdAndChannelName(
+            ChatChannel targetChannel = this.channelRepository.findOneByAppIdAndChannelName(
                     request.getAppId(),
                     request.getRegion(),
                     request.getChannelName()
             );
+            ChatSubscribe exist = this.subscribeRepository.findOneByUserIdAndChannelId(
+                    user.get_id(),
+                    targetChannel.get_id()
+            );
 
+            if (exist!=null) {
+                //update
+                subscribeMapper.setSubscribe(exist);
+                exist = this.subscribeRepository.updateToSubscribe(exist);
+            } else {
+                //create
+                ChatSubscribe subscribe = this.subscribeMapper.setCreate(user,targetChannel);
+                exist = this.subscribeRepository.save(subscribe);
+            }
             response.successResponse();
         } catch (Exception e) {
             e.printStackTrace();
