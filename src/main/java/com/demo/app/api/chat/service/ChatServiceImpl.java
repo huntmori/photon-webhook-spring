@@ -158,6 +158,7 @@ public class ChatServiceImpl implements ChatService{
                 exist = this.subscribeRepository.save(exist);
             } else {
                 // 구독해제를 하는데 구독엔티티가 없다..?
+                log.info("there is no subscribe");
             }
 
             response.successResponse();
