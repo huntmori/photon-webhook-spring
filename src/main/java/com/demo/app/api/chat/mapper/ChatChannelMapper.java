@@ -36,4 +36,11 @@ public interface ChatChannelMapper extends GenericMapper<ChannelCreateRequest, C
         exist.setMaxSubscribers(request.getMaxSubscribers());
         exist.setPublishSubscribers(request.isPublishSubscribers());
     }
+
+    default ChatChannel toDestroy(ChatChannel targetChannel) {
+        targetChannel.setChannelState("DESTROYED");
+        targetChannel.setUpdatedAt(LocalDateTime.now());
+        return targetChannel;
+    }
+
 }

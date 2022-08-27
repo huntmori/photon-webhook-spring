@@ -136,12 +136,58 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public PhotonResponse channelUnsubscribe(ChannelUnsubscribeRequest request) {
-        return null;
+        PhotonResponse response = new PhotonDefaultResponse();
+        try {
+            ChatUser user = this.userRepository.findOneByAppIdAndUserId(
+                    request.getAppId(),
+                    request.getUserId()
+            );
+            ChatChannel targetChannel = this.channelRepository.findOneByAppIdAndChannelName(
+                    request.getAppId(),
+                    request.getRegion(),
+                    request.getChannelName()
+            );
+            ChatSubscribe exist = this.subscribeRepository.findOneByUserIdAndChannelId(
+                    user.get_id(),
+                    targetChannel.get_id()
+            );
+
+            if (exist !=null) {
+                //update unsubscribe
+                this.subscribeMapper.setUnsubscribe(exist);
+                exist = this.subscribeRepository.save(exist);
+            } else {
+                // 구독해제를 하는데 구독엔티티가 없다..?
+            }
+
+            response.successResponse();
+        } catch(Exception e) {
+            response.errorResponse(e.getMessage());
+        }
+        return response;
     }
 
     @Override
     public PhotonResponse channelDestroy(ChannelDestroyRequest request) {
-        return null;
+        PhotonResponse response = new PhotonDefaultResponse();
+        try {
+            ChatChannel targetChannel = this.channelRepository.findOneByAppIdAndChannelName(
+                    request.getAppId(),
+                    request.getRegion(),
+                    request.getChannelName()
+            );
+
+            if(targetChannel != null) {
+                targetChannel = this.channelMapper.toDestroy(targetChannel);
+            } else {
+                //채널 파괴인데 채널이 없다..?
+                log.info("target channel missing.");
+            }
+            response.successResponse();
+        } catch(Exception e) {
+            response.errorResponse(e.getMessage());
+        }
+        return response;
     }
 
     @Override
